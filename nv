@@ -1,0 +1,35 @@
+#!/bin/bash
+
+TODAY=$(date '+%Y-%m-%d')
+# TODAY="2020-11-01"
+
+# Have not stripped leading line off schedule, so skipping title is in awk program
+
+# KISS and get it working before simpifying code.
+
+# version	start	lts	maintenance	end	codename
+# 1       2     3   4           5   6
+case "$1" in
+  "FIELDS")
+    awk -v today="${TODAY}" 'BEGIN { FS="\t" }; { print "1:" $1 " 2:" $2 " 3:" $3 " 4:" $4 " 5:" $5 }' schedule.tab 
+    ;;
+  "supported")
+    awk -v today="${TODAY}" 'BEGIN { FS="\t" }; NR > 1 && today > $2 && today < $5 { print $1 }' schedule.tab 
+    ;;
+  "active")
+    awk -v today="${TODAY}" 'BEGIN { FS="\t" }; NR > 1 && length($4) > 0 && today > $2 && today < $4 { print $1 }' schedule.tab
+    ;;
+  "lts_active")
+    awk -v today="${TODAY}" 'BEGIN { FS="\t" }; NR > 1 && length($6) > 0 && today > $3 && today < $4 { print $1 }' schedule.tab
+    ;;
+  "lts_latest")
+    awk -v today="${TODAY}" 'BEGIN { FS="\t" }; NR > 1 && length($6) > 0 && today > $3 && today < $5 { print $1 }' schedule.tab | head -n 1
+    ;;
+  "lts")
+    awk -v today="${TODAY}" 'BEGIN { FS="\t" }; NR > 1 && length($6) > 0 && today > $3 && today < $5 { print $1 }' schedule.tab
+    ;;
+  "current")
+    awk -v today="${TODAY}" 'BEGIN { FS="\t" }; NR > 1 && today > $2 && today < $5 { print $1 }' schedule.tab | head -n 1
+    ;;
+  *) echo "unexpected-version"
+esac
