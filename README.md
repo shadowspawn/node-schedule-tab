@@ -23,7 +23,7 @@ Which might be the authoritative reference for questions when we have two files 
 
 When does a stream become active? `index.tab` because a version has to be released.
 
-When does a stream become lts? `index.tab` because a version has to be released (has codename backed in).
+When does a stream become lts? `index.tab` because a version has to be released (has codename baked in).
 
 When does a stream enter maintenance? `schedule.tab` because does not need a release, date passes.
 
